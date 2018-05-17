@@ -22,9 +22,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import pl.altkom.shop.repo.data.ExtendedRepositoryImpl;
+
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
-@EnableJpaRepositories("pl.altkom.shop.repo")
+@EnableJpaRepositories(value = "pl.altkom.shop.repo", repositoryBaseClass = ExtendedRepositoryImpl.class)
 public class DBConfig {
 
 	@Value("${db.driverClassName}")

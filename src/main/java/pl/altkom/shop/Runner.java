@@ -1,8 +1,10 @@
 package pl.altkom.shop;
 
+import java.time.LocalDateTime;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import pl.altkom.shop.repo.ProductRepo;
+import pl.altkom.shop.repo.SpringDataProductRepo;
 import pl.altkom.shop.service.ProductService;
 
 public class Runner {
@@ -11,8 +13,8 @@ public class Runner {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CoreConfig.class);
 		ProductService productService = (ProductService) context.getBean("productService");
 		System.out.println(productService);
-		ProductRepo repo = context.getBean(ProductRepo.class);
-		System.out.println(repo.getAll());
+		SpringDataProductRepo repo = context.getBean(SpringDataProductRepo.class);
+		System.out.println(repo.showDeleted(LocalDateTime.now()));
 	}
 
 }
