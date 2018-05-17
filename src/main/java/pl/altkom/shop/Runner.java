@@ -14,7 +14,13 @@ public class Runner {
 		ProductService productService = (ProductService) context.getBean("productService");
 		System.out.println(productService);
 		SpringDataProductRepo repo = context.getBean(SpringDataProductRepo.class);
-		System.out.println(repo.showDeleted(LocalDateTime.now()));
+		System.out.println("$$$$$$$$$$$");
+		LocalDateTime now = LocalDateTime.now();
+		System.out.println(repo.findByName("a"));
+		System.out.println("$$$$$$$$$$$");
+		System.out.println(repo.findByName("a"));
+		System.out.println("$$$$$$$$$$$");
+		System.out.println(repo.findByName("a"));
 	}
 
 }

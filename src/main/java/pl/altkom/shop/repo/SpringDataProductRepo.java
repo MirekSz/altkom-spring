@@ -3,6 +3,7 @@ package pl.altkom.shop.repo;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +18,7 @@ public interface SpringDataProductRepo extends ExtendedRepository<Product, Long>
 	@Query("FROM Product where id = :id")
 	Optional<Product> find(@Param("id") Long id);
 
+	@Cacheable("products")
 	@Query("select name FROM Product where name = :name")
 	ProductInfo findByName(@Param("name") String name);
 
