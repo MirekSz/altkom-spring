@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class HibernateProductRepo implements ProductRepo {
 		return (Long) em.createQuery("SELECT count(*) FROM Product p").getSingleResult();
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public void delete(Long id) {
 		Product product = em.find(Product.class, id);

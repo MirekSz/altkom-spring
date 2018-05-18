@@ -8,7 +8,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -39,10 +38,6 @@ public class WebBootstrap implements WebApplicationInitializer {
 		ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
-
-		ServletRegistration.Dynamic cxf = container.addServlet("cxf", new CXFServlet());
-		cxf.addMapping("/services/*");
-		cxf.setLoadOnStartup(1);
 
 		utf8(container);
 	}
