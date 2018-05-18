@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -29,6 +30,7 @@ public class WebBootstrap implements WebApplicationInitializer {
 		ctx.setServletContext(container);
 
 		container.addListener(new ContextLoaderListener(ctx));
+		container.addListener(HttpSessionEventPublisher.class);
 		container.addListener(RequestContextListener.class);
 
 		Dynamic securityFiler = container.addFilter("springSecurityFilterChain",
