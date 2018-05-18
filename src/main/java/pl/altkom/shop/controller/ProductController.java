@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pl.altkom.shop.model.Product;
@@ -32,7 +34,8 @@ public class ProductController {
 	ProductRepo repo;
 	@Inject
 	ProductService service;
-
+	@Inject
+	RestTemplate restemplate;
 	@Inject
 	OAuth2AuthorizedClientService clientService;
 
@@ -47,6 +50,9 @@ public class ProductController {
 					.loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
 
 			model.addAttribute("token", client.getAccessToken().getTokenValue());
+			ResponseEntity<Object[]> forEntity = restemplate
+					.getForEntity("https://api.github.com/repos/MIrekSz/json-hashing/events", Object[].class);
+			model.addAttribute("events", forEntity.getBody());
 		} catch (Exception e) {
 
 		}
