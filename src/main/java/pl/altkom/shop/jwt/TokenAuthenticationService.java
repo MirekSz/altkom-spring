@@ -20,7 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class TokenAuthenticationService {
 
-	static final long EXPIRATIONTIME = 864_000_000; // 10 days
+	static final long EXPIRATIONTIME = 60000; // 10 days
 	static final String SECRET = "ThisIsASecret";
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
@@ -51,7 +51,7 @@ public class TokenAuthenticationService {
 				roles = (List<String>) body.get("ROLES");
 				user = body.getSubject();
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				return null;
 			}
 			return user != null ? new UsernamePasswordAuthenticationToken(user, null,
 					roles.stream().map(SimpleGrantedAuthority::new).collect(toList())) : null;

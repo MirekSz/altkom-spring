@@ -15,11 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
-	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
-			throws ServletException, IOException {
+	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+			final FilterChain filterChain) throws ServletException, IOException {
 		if (request.getHeader(TokenAuthenticationService.HEADER_STRING) != null) {
 			Authentication authentication = TokenAuthenticationService.getAuthentication(request);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			if (authentication != null)
+				SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 
 		filterChain.doFilter(request, response);
