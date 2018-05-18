@@ -197,6 +197,11 @@
 			<version>2.53.1</version>
 			<scope>test</scope>
 		</dependency>
+		 <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
 	</dependencies>
 
 	<packaging>war</packaging>

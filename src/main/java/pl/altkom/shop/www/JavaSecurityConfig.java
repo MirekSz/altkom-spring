@@ -38,8 +38,11 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
+import pl.altkom.shop.jwt.JWTAuthenticationFilter;
+import pl.altkom.shop.jwt.JWTLoginFilter;
 import pl.altkom.shop.lib.Profiles;
 
 @Configuration
@@ -99,8 +102,13 @@ public class JavaSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().antMatchers("/public/**").permitAll().anyRequest().authenticated().and()
-					.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").and().oauth2Login()
-					.loginPage("/login").userInfoEndpoint().customUserType(GitHubOAuth2User.class, "github");
+					.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").and()
+					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+					.addFilterAfter(new JWTLoginFilter(authenticationManager()),
+							UsernamePasswordAuthenticationFilter.class)
+					.oauth2Login().loginPage("/login").userInfoEndpoint()
+					.customUserType(GitHubOAuth2User.class, "github");
+
 		}
 
 	}
