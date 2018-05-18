@@ -8,11 +8,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="/WEB-INF/pages/layout/head.jsp"%>
 
-<sec:authentication property="principal.authorities" var="authorities" />
-<c:forEach items="${authorities}" var="authority" varStatus="vs">
-<p>${authority.authority}</p>
-</c:forEach>
-${token}
  <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 	<a href="new" class="btn btn-primary "> <i
 		class=" glyphicon glyphicon-plus"></i> Add new product

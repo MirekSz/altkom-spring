@@ -1,9 +1,6 @@
 package pl.altkom.shop.www;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +8,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 
-import pl.altkom.shop.jwt.JWTAuthenticationFilter;
-import pl.altkom.shop.jwt.JWTLoginFilter;
 import pl.altkom.shop.lib.Profiles;
 
 @Configuration
@@ -65,21 +42,6 @@ public class JavaSecurityConfig {
 		return passwordEncoder;
 	}
 
-	@Bean
-	public OAuth2AuthorizedClientService authorizedClientService() {
-		return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository());
-	}
-
-	@Bean
-	public ClientRegistrationRepository clientRegistrationRepository() {
-		return new InMemoryClientRegistrationRepository(this.googleClientRegistration());
-	}
-
-	private ClientRegistration googleClientRegistration() {
-		return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("81643f82708112d21007")
-				.clientSecret("78fc4732b593024a709d2315e2ea50111a4ac532").build();
-	}
-
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER").and().withUser("admin")
@@ -92,8 +54,8 @@ public class JavaSecurityConfig {
 	public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.antMatcher("/api/**").authorizeRequests().anyRequest().hasRole("REST").and().httpBasic().and()
-					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+			http.antMatcher("/api/**").authorizeRequests().anyRequest().hasRole("REST").and().httpBasic()
+					.realmName("Altkom");
 		}
 	}
 
@@ -103,45 +65,10 @@ public class JavaSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().antMatchers("/public/**").permitAll().anyRequest().authenticated().and()
-					.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").and()
-					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.addFilterAfter(new JWTLoginFilter(authenticationManager()),
-							UsernamePasswordAuthenticationFilter.class)
-					.oauth2Login().loginPage("/login").userInfoEndpoint()
-					.customUserType(GitHubOAuth2User.class, "github");
+					.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout");
 
 		}
 
-	}
-
-	@Bean
-	public RestTemplate restTemplate(OAuth2AuthorizedClientService clientService) {
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-
-		messageConverters.add(new MappingJackson2HttpMessageConverter());
-		RestTemplate template = new RestTemplate();
-		template.setMessageConverters(messageConverters);
-		template.getInterceptors().add(new ClientHttpRequestInterceptor() {
-
-			@Override
-			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-					throws IOException {
-				try {
-					Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-					OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-
-					OAuth2AuthorizedClient client = clientService
-							.loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
-
-					String headerValue = "Bearer " + client.getAccessToken().getTokenValue();
-					request.getHeaders().set("Authorization", headerValue);
-				} catch (Exception e) {
-
-				}
-				return execution.execute(request, body);
-			}
-		});
-		return template;
 	}
 
 	public static void main(String[] args) {

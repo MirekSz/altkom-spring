@@ -27,7 +27,6 @@
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-       <a href="oauth2/authorization/github">GitHub</a>
       </form>
 
   
