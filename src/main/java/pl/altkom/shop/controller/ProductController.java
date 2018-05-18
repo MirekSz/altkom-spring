@@ -6,6 +6,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,10 +33,23 @@ public class ProductController {
 	@Inject
 	ProductService service;
 
+	@Inject
+	OAuth2AuthorizedClientService clientService;
+
 	@RequestMapping("/list")
 	public String list(Model model, @RequestParam(required = false, value = "page") Integer page,
 			@RequestParam(required = false, value = "orderBy") String orderBy) throws Exception {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
 
+			OAuth2AuthorizedClient client = clientService
+					.loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
+
+			model.addAttribute("token", client.getAccessToken().getTokenValue());
+		} catch (Exception e) {
+
+		}
 		model.addAttribute("page", page);
 		model.addAttribute("orderBy ", orderBy);
 
