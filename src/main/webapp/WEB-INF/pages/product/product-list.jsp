@@ -13,7 +13,7 @@
 <p>${authority.authority}</p>
 </c:forEach>
 ${token}
- <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+ <sec:authorize access="hasAnyRole('ROLE_STAFF')">
 	<a href="new" class="btn btn-primary "> <i
 		class=" glyphicon glyphicon-plus"></i> Add new product
 	</a>

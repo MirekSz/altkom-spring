@@ -50,6 +50,7 @@ public class HibernateProductRepo implements ProductRepo {
 
 	@Override
 	@Transactional(readOnly = true)
+	@PreAuthorize("hasRole('ROLE_GUEST')")
 	public List<Product> getAll() {
 		return em.createQuery("FROM Product p").getResultList();
 	}

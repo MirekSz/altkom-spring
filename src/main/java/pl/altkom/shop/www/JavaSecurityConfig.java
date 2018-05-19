@@ -18,6 +18,10 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,6 +44,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionCreatedEvent;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
@@ -116,6 +121,33 @@ public class JavaSecurityConfig {
 					.oauth2Login().loginPage("/login").userInfoEndpoint()
 					.customUserType(GitHubOAuth2User.class, "github");
 
+		}
+
+		@Bean
+		public RoleHierarchy roleHierarchy() {
+			RoleHierarchyImpl roleHierarchyImpl = new RoleHierarchyImpl();
+			roleHierarchyImpl
+					.setHierarchy("ROLE_ADMIN > ROLE_STAFF\n" + "ROLE_STAFF > ROLE_USER\n" + "ROLE_USER > ROLE_GUEST");
+			return roleHierarchyImpl;
+		}
+
+		@Bean
+		public RoleHierarchyVoter roleVoter() {
+			return new RoleHierarchyVoter(roleHierarchy());
+		}
+
+		@Bean
+		public DefaultMethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
+			DefaultMethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler = new DefaultMethodSecurityExpressionHandler();
+			defaultMethodSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+			return defaultMethodSecurityExpressionHandler;
+		}
+
+		@Bean
+		public DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler() {
+			DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+			defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+			return defaultWebSecurityExpressionHandler;
 		}
 
 	}
