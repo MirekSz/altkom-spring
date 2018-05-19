@@ -53,7 +53,7 @@ public class ProductController {
 
 			model.addAttribute("token", client.getAccessToken().getTokenValue());
 			ResponseEntity<Object[]> forEntity = restemplate
-					.getForEntity("https://api.github.com/repos/MIrekSz/json-hashing/events", Object[].class);
+					.getForEntity("https://api.github.com/repos/MirekSz/json-hashing/events", Object[].class);
 			model.addAttribute("events", forEntity.getBody());
 		} catch (Exception e) {
 
