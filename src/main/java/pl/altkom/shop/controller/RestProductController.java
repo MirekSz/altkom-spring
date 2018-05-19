@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class RestProductController {
 
 	@Monitoring
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Product> list() {
+	public List<Product> list(Authentication au) {
 		return repo.getAll();
 	}
 

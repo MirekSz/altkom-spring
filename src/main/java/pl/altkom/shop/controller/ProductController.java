@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,8 @@ public class ProductController {
 
 	@RequestMapping("/list")
 	public String list(Model model, @RequestParam(required = false, value = "page") Integer page,
-			@RequestParam(required = false, value = "orderBy") String orderBy) throws Exception {
+			@RequestParam(required = false, value = "orderBy") String orderBy, Authentication au, HttpSession sa)
+			throws Exception {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;

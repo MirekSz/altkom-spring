@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -22,6 +23,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,6 +41,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionCreatedEvent;
+import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 import org.springframework.web.client.RestTemplate;
 
 import pl.altkom.shop.jwt.JWTAuthenticationFilter;
@@ -93,6 +97,7 @@ public class JavaSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.antMatcher("/api/**").authorizeRequests().anyRequest().hasRole("REST").and().httpBasic().and()
+					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		}
 	}
@@ -104,6 +109,7 @@ public class JavaSecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().antMatchers("/public/**").permitAll().anyRequest().authenticated().and()
 					.formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout").and()
+					.sessionManagement().maximumSessions(1).and().and()
 					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.addFilterAfter(new JWTLoginFilter(authenticationManager()),
 							UsernamePasswordAuthenticationFilter.class)
@@ -142,6 +148,18 @@ public class JavaSecurityConfig {
 			}
 		});
 		return template;
+	}
+
+	@EventListener
+	public void sessionCreated(HttpSessionCreatedEvent se) {
+		System.out.println(se);
+
+	}
+
+	@EventListener
+	public void sessionDestroyed(HttpSessionDestroyedEvent se) {
+		System.out.println(se);
+
 	}
 
 	public static void main(String[] args) {
