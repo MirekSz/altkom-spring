@@ -2,7 +2,7 @@ package pl.altkom.shop.www;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		@Override
 		public String convert(LocalDateTime source) {
-			return source.format(new DateTimeFormatterBuilder().toFormatter());
+			return source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		}
 
 	}
