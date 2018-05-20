@@ -20,7 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class TokenAuthenticationService {
 
-	static final long EXPIRATIONTIME = 60000; // 10 days
+	static final long EXPIRATIONTIME = 60000; // 60 seconds
 	static final String SECRET = "ThisIsASecret";
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
