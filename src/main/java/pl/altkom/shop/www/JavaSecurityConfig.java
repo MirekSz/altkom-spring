@@ -50,6 +50,7 @@ public class JavaSecurityConfig {
 	}
 
 	@Configuration
+	@Profile(Profiles.WEB)
 	@Order(1)
 	public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 		@Override
@@ -60,6 +61,7 @@ public class JavaSecurityConfig {
 	}
 
 	@Configuration
+	@Profile(Profiles.WEB)
 	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
 		@Override
