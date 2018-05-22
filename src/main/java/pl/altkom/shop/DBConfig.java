@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
@@ -33,13 +34,13 @@ public class DBConfig {
 
 	@Bean
 	public DataSource dataSource() {
-		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl(url);
-		config.setDriverClassName(driverClassName);
-		config.setUsername(username);
-		config.setPassword(password);
-		config.setMaximumPoolSize(10);
-		return new HikariDataSource(config);
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(driverClassName);
+		dataSource.setUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		return dataSource;
+
 	}
 
 	@Bean
@@ -65,6 +66,7 @@ public class DBConfig {
 		Map<String, Object> properties = new HashMap();
 		properties.put("hibernate.show_sql", true);
 		properties.put("hibernate.format_sql", true);
+		properties.put("hibernate.connection.provider_disables_autocommit", true);
 
 		return properties;
 	}

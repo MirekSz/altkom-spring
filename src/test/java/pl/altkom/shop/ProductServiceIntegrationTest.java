@@ -19,11 +19,11 @@ import pl.altkom.shop.model.Product;
 import pl.altkom.shop.repo.ProductRepo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = CoreConfig.class)
+@ContextConfiguration(classes = { CoreConfig.class, TestConfig.class })
 @Transactional
 @Rollback(true)
 @ActiveProfiles(Profiles.TEST)
-public class SaleDocumentServiceTest {
+public class ProductServiceIntegrationTest {
 
 	@Inject
 	ProductRepo repo;
@@ -33,11 +33,12 @@ public class SaleDocumentServiceTest {
 		// given
 		Product product = new Product("SSD", "Szybki", 10, BigDecimal.TEN);
 		Long count = repo.count();
-		System.out.println(count);
+
 		// when
 		repo.insert(product);
 
 		// then
 		assertThat(repo.count()).isGreaterThan(count);
 	}
+
 }

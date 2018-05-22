@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import pl.altkom.shop.aop.Monitoring;
 import pl.altkom.shop.model.Product;
 
 @Repository
@@ -49,6 +50,7 @@ public class HibernateProductRepo implements ProductRepo {
 	}
 
 	@Override
+	@Monitoring
 	@Transactional(readOnly = true)
 	public List<Product> getAll() {
 		return em.createQuery("FROM Product p").getResultList();
