@@ -1,16 +1,23 @@
 package pl.altkom.shop.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
 	@Id
@@ -23,6 +30,12 @@ public class Product {
 	private Integer quantity;
 	@NotNull
 	private BigDecimal price;
+	@CreatedBy
+	private String owner;
+	@LastModifiedBy
+	private String lastupdate;
+	@CreatedDate
+	private LocalDate createdDate;
 
 	public Product(String name, String description, int quentity, BigDecimal price) {
 		this.name = name;
@@ -73,6 +86,30 @@ public class Product {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getLastupdate() {
+		return lastupdate;
+	}
+
+	public void setLastupdate(String lastupdate) {
+		this.lastupdate = lastupdate;
+	}
+
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDate createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 }

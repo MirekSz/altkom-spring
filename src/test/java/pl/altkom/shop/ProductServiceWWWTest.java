@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -59,14 +60,16 @@ public class ProductServiceWWWTest {
 		// given
 		Product product = new Product("SSD", "Szybki", 10, BigDecimal.TEN);
 		repo.insert(product);
+		assertThat(product.getOwner()).isNotEmpty();
 
 		// when
-		MockHttpServletResponse response = this.mockMvc
+		ResultActions actions = this.mockMvc
 				.perform(get("/api/products").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith("application/json"))
-				.andReturn().getResponse();
+				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith("application/json"));
+		MockHttpServletResponse response = actions.andReturn().getResponse();
 
 		// then
+		actions.andExpect(jsonPath("$[0].name").value("SSD"));
 		assertThat(response.getContentAsString()).contains("SSD");
 	}
 
@@ -78,7 +81,7 @@ public class ProductServiceWWWTest {
 		repo.insert(product);
 
 		// when
-		ResultActions perform = this.mockMvc.perform(delete("/api/products/" + product.getId()));
+		ResultActions perform = this.mockMvc.perform(delete("/api/products/{id}", product.getId()));
 
 		// then
 		perform.andExpect(status().isOk());
