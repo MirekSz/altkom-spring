@@ -44,10 +44,10 @@ public class DBConfig {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
 		LocalContainerEntityManagerFactoryBean emFactory = new LocalContainerEntityManagerFactoryBean();
 		emFactory.setPersistenceUnitName("products");
-		emFactory.setDataSource(dataSource());
+		emFactory.setDataSource(ds);
 		emFactory.setPackagesToScan(new String[] { "pl.altkom.shop.model" });
 		emFactory.setJpaVendorAdapter(createHibernateAdapter());
 		emFactory.getJpaPropertyMap().putAll(getHibernateProperties());
