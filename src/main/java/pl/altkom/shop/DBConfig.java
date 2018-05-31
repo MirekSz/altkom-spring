@@ -43,7 +43,7 @@ public class DBConfig {
 		return new JdbcTemplate(dataSource());
 	}
 
-	@Bean
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		// // DriverManagerDataSource dataSource = new
 		// DriverManagerDataSource();

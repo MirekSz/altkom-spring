@@ -48,6 +48,16 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
+<table class="table table-hover table-striped" id="productsTable">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th><spring:message code="product.name"/></th>
+				<th><spring:message code="product.quantity"/></th>
+				<th><spring:message code="product.price"/></th>
+				<th><spring:message code="product.actions"/></th>
+			</tr>
+		</thead>
+	</table>
 <%@ include file="/WEB-INF/pages/layout/footer.jsp"%>
 

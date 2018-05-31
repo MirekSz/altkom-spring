@@ -11,9 +11,12 @@
 <link href="${contextPath}/public/assets/css/style.css" rel="stylesheet" />
 <link href="${contextPath}/public/assets/css/font-awesome.min.css" rel="stylesheet" />
 <link href="${contextPath}/public/assets/css/nprogress.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
 <script type="text/javascript" src="${contextPath}/public/assets/js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="${contextPath}/public/assets/js/nprogress.js"></script>
+<script type="text/javascript" src="${contextPath}/public/assets/js/jquery.spring-friendly.js"></script>
 <script type="text/javascript" src="${contextPath}/public/assets/app.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 </head>
 <sec:authentication var="user" property="principal" />
 <body>

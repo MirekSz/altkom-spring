@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,13 @@ public class RestProductController {
 
 	@Inject
 	ProductRepo repo;
+
+	@RequestMapping(value = "/ds", method = RequestMethod.GET)
+	public DataTablesOutput<Product> datatables(DataTablesInput req) {
+		DataTablesOutput<Product> dataTablesOutput = new DataTablesOutput<>();
+		dataTablesOutput.setData(repo.getAll());
+		return dataTablesOutput;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Product> list() {

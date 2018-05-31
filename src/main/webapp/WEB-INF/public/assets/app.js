@@ -17,4 +17,22 @@ $(document).ready(function() {
 //		$("table tbody").empty();
 //		$("table tbody").append(data);
 //	})
+	
+	 $('#productsTable').DataTable( {
+	        "ajax": "/spring-shop/api/products/ds",
+	        "serverSide": true,
+	        "columns": [
+	            { "data": "id" },
+	            { "data": "name" },
+	            { "data": "quantity" },
+	            { "data": "price" },
+	            {
+	                 sortable: false,
+	                 "render": function ( full, type, data, meta ) {
+	                	 return '<a href="'+data.id+'/edit"> <i class=" glyphicon glyphicon-pencil"></i></a>'
+	                 }
+	             },
+	        ]
+	    } );
+	 
 })
