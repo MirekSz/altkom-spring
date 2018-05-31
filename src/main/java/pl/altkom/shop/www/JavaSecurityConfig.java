@@ -81,10 +81,10 @@ public class JavaSecurityConfig {
 
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository() {
-		return new InMemoryClientRegistrationRepository(this.googleClientRegistration());
+		return new InMemoryClientRegistrationRepository(this.githubClientRegistration());
 	}
 
-	private ClientRegistration googleClientRegistration() {
+	private ClientRegistration githubClientRegistration() {
 		return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("81643f82708112d21007")
 				.clientSecret("78fc4732b593024a709d2315e2ea50111a4ac532").build();
 	}
