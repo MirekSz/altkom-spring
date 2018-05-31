@@ -15,7 +15,7 @@
 <script type="text/javascript" src="${contextPath}/public/assets/js/nprogress.js"></script>
 <script type="text/javascript" src="${contextPath}/public/assets/app.js"></script>
 </head>
-<sec:authentication var="user" property="principal" />
+<sec:authentication var="user" property="name" />
 <body>
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -34,7 +34,7 @@
 					<li><a href="${contextPath}/cart">Cart</a></li>
 					<sec:authorize
 						access="isAuthenticated()">
-					<li><a href="#" onClick="$('#logoutForm').submit();return false;">Logout ${user.username}</a></li>
+					<li><a href="#" onClick="$('#logoutForm').submit();return false;">Logout ${user}</a></li>
 					</sec:authorize>
 				</ul>
 			</div>

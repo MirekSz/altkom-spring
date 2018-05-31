@@ -15,7 +15,6 @@ public class GitHubOAuth2User implements OAuth2User {
 	private final List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
 	private Map<String, Object> attributes;
 	private String id;
-	private String username;
 	private String name;
 	private String login;
 	private String email;
@@ -52,7 +51,6 @@ public class GitHubOAuth2User implements OAuth2User {
 
 	public void setName(final String name) {
 		this.name = name;
-		this.username = name;
 	}
 
 	public String getLogin() {
@@ -71,11 +69,4 @@ public class GitHubOAuth2User implements OAuth2User {
 		this.email = email;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 }
