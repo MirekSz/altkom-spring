@@ -46,6 +46,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionCreatedEvent;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 import org.springframework.web.client.RestTemplate;
@@ -103,7 +104,7 @@ public class JavaSecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.antMatcher("/api/**").authorizeRequests().anyRequest().hasRole("REST").and().httpBasic().and()
 					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-					.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+					.addFilterBefore(new JWTAuthenticationFilter(), BasicAuthenticationFilter.class);
 		}
 	}
 
