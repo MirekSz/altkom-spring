@@ -7,7 +7,9 @@
 
 </cache>
     <select id="findAll" resultType="pl.altkom.shop.model.Product" >
+    <if test="_databaseId == 'MySQL'">
         select * from PRODUCT
+    </if>
     </select>
      <select id="findById" resultType="pl.altkom.shop.model.Product" >
         select * from PRODUCT WHERE id = #{id}

@@ -19,6 +19,7 @@ public class MyBatisConfig {
 		org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 		configuration.setLazyLoadingEnabled(true);
 		sqlSessionFactoryBean.setConfiguration(configuration);
+		sqlSessionFactoryBean.setDatabaseIdProvider(new VendorDatabaseIdProvider());
 		return sqlSessionFactoryBean;
 	}
 }
