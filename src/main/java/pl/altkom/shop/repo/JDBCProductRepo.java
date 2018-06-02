@@ -18,6 +18,21 @@ public class JDBCProductRepo implements ProductRepo {
 
 	@Override
 	public Long insert(Product product) {
+		// GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		// AUTO_INCREMENT
+		// jdbcTemplate.update(con -> {
+		// PreparedStatement ps = con.prepareStatement(
+		// "insert into product ( name,description,quantity,price) VALUES
+		// (?,?,?,?)",
+		// Statement.RETURN_GENERATED_KEYS);
+		// ps.setString(1, product.getName());
+		// ps.setString(2, product.getDescription());
+		// ps.setInt(3, product.getQuantity());
+		// ps.setBigDecimal(4, product.getPrice());
+		// return ps;
+		// }, generatedKeyHolder);
+		// return generatedKeyHolder.getKey().longValue();
+
 		Long id = jdbcTemplate.queryForObject("select max(id) from product", Long.class) + 1;
 		jdbcTemplate.update("insert into product (id, name,description,quantity,price) VALUES (?,?,?,?,?)", id,
 				product.getName(), product.getDescription(), product.getQuantity(), product.getPrice());
