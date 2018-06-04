@@ -2,6 +2,7 @@ package pl.altkom.shop;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
@@ -16,7 +17,7 @@ public class CoreConfig {
 	}
 
 	@Bean
-	@Scope("prototype")
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public Logger logger(InjectionPoint injectionPoint) {
 		return Logger.getLogger(injectionPoint.getMember().getDeclaringClass());
 	}
