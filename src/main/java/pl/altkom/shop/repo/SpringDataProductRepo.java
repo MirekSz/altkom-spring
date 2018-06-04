@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,8 @@ import pl.altkom.shop.model.Product;
 import pl.altkom.shop.repo.data.ExtendedRepository;
 
 @Repository
-public interface SpringDataProductRepo extends ExtendedRepository<Product, Long>, SpringDataProductRepoCustom {
+public interface SpringDataProductRepo
+		extends ExtendedRepository<Product, Long>, SpringDataProductRepoCustom, QueryDslPredicateExecutor<Product> {
 
 	@Query("FROM Product where id = :id")
 	Optional<Product> find(@Param("id") Long id);

@@ -7,16 +7,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 
-public class ExtendedRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
+public class ExtendedRepositoryImpl<T, ID extends Serializable> extends QueryDslJpaRepository<T, ID>
 		implements ExtendedRepository<T, ID> {
 
 	private EntityManager entityManager;
 
 	private JpaEntityInformation<T, ?> entity;
 
-	public ExtendedRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+	public ExtendedRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 		this.entity = entityInformation;
 		this.entityManager = entityManager;
