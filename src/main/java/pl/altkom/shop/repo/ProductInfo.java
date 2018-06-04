@@ -1,21 +1,17 @@
 package pl.altkom.shop.repo;
 
-public class ProductInfo {
-	private String name;
+import java.math.BigDecimal;
 
-	public ProductInfo(String name) {
-		this.name = name;
+import org.springframework.beans.factory.annotation.Value;
 
-	}
+public interface ProductInfo {
 
-	public String getName() {
-		return name;
-	}
+	public String getName();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public BigDecimal getPrice();
 
-	// @Value("#{target.price + ' ' + target.quantity}")
-	// String getDetails();
+	public Integer getQuantity();
+
+	@Value("#{target.price + ' ' + target.quantity}")
+	String getDetails();
 }
