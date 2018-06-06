@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
+
 import pl.altkom.shop.model.Product;
+import pl.altkom.shop.model.QProduct;
 import pl.altkom.shop.repo.ProductRepo;
+import pl.altkom.shop.repo.SpringDataProductRepo;
 
 @RestController
 @RequestMapping("/api/products")
@@ -23,11 +27,14 @@ public class RestProductController {
 
 	@Inject
 	ProductRepo repo;
+	@Inject
+	SpringDataProductRepo springDataProductRepo;
 
 	@RequestMapping(value = "/ds", method = RequestMethod.GET)
 	public DataTablesOutput<Product> datatables(DataTablesInput req) {
 		DataTablesOutput<Product> dataTablesOutput = new DataTablesOutput<>();
-		dataTablesOutput.setData(repo.getAll());
+		// dataTablesOutput.setData(repo.getAll());
+		dataTablesOutput.setData(Lists.newArrayList(springDataProductRepo.findAll(QProduct.product.name.desc())));
 		return dataTablesOutput;
 	}
 
