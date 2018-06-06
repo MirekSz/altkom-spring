@@ -39,7 +39,11 @@ public class HibernateProductRepo implements ProductRepo {
 	@Override
 	public Long count() {
 		EntityManager em = startTx();
-		return (Long) em.createQuery("SELECT count(*) FROM Product p").getSingleResult();
+		try {
+			return (Long) em.createQuery("SELECT count(*) FROM Product p").getSingleResult();
+		} finally {
+			commit(em);
+		}
 	}
 
 	@Override
@@ -53,8 +57,12 @@ public class HibernateProductRepo implements ProductRepo {
 	@Override
 	public Product find(Long id) {
 		EntityManager em = startTx();
-		Product product = em.find(Product.class, id);
-		return product;
+		try {
+			Product product = em.find(Product.class, id);
+			return product;
+		} finally {
+			commit(em);
+		}
 	}
 
 	@Override
@@ -68,6 +76,10 @@ public class HibernateProductRepo implements ProductRepo {
 	@Override
 	public List<Product> getAll() {
 		EntityManager em = startTx();
-		return em.createQuery("FROM Product p").getResultList();
+		try {
+			return em.createQuery("FROM Product p").getResultList();
+		} finally {
+			commit(em);
+		}
 	}
 }

@@ -43,7 +43,7 @@ public class DBConfig {
 		return new JdbcTemplate(dataSource());
 	}
 
-	@Bean(destroyMethod = "close")
+	@Bean(destroyMethod = "shutdown")
 	public DataSource dataSource() {
 		// // DriverManagerDataSource dataSource = new
 		// DriverManagerDataSource();
@@ -56,6 +56,7 @@ public class DBConfig {
 		//
 		// Pool
 		HikariConfig config = new HikariConfig();
+		config.setLeakDetectionThreshold(30 * 1000);
 		config.setJdbcUrl(url);
 		config.setDriverClassName(driverClassName);
 		config.setUsername(username);
@@ -92,6 +93,7 @@ public class DBConfig {
 		Map<String, Object> properties = new HashMap();
 		properties.put("hibernate.show_sql", true);
 		properties.put("hibernate.format_sql", true);
+		properties.put("hibernate.connection.release_mode", "after_transaction");
 
 		return properties;
 	}
