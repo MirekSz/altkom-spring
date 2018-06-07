@@ -18,9 +18,20 @@ $(document).ready(function() {
 //		$("table tbody").append(data);
 //	})
 	
-	 $('#productsTable').DataTable( {
+	var table= $('#productsTable').DataTable( {
 	        "ajax": "/spring-shop/api/products/ds",
 	        "serverSide": true,
+	        "select": true,
+	        "dom": 'Bfrtip',
+	        "buttons": [
+	            {
+	                text: 'Get selected data',
+	                action: function () {
+	                    var count = table.rows( { selected: true } ).count();
+	                    var count = table.row().data().id;
+	                }
+	            }
+	        ],
 	        "columns": [
 	            { "data": "id" },
 	            { "data": "name" },

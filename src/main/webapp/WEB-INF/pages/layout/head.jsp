@@ -17,6 +17,8 @@
 <script type="text/javascript" src="${contextPath}/public/assets/js/jquery.spring-friendly.js"></script>
 <script type="text/javascript" src="${contextPath}/public/assets/app.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.5/js/dataTables.select.min.js"></script>
 </head>
 <sec:authentication var="user" property="principal" />
 <body>
