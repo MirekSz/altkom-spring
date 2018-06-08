@@ -32,6 +32,7 @@ public class ProductServiceIntegrationTest {
 	@Test
 	@IfProfileValue(name = "os.name", value = "Windows 7")
 	public void shouldAddProduct() throws Exception {
+		System.out.println(System.getProperties());
 		// given
 		Product product = new Product("SSD", "Szybki", 10, BigDecimal.TEN);
 		Long count = repo.count();
