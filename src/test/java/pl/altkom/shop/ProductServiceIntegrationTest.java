@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,7 +30,9 @@ public class ProductServiceIntegrationTest {
 	ProductRepo repo;
 
 	@Test
+	@IfProfileValue(name = "os.name", value = "Windows 7")
 	public void shouldAddProduct() throws Exception {
+		System.out.println(System.getProperties());
 		// given
 		Product product = new Product("SSD", "Szybki", 10, BigDecimal.TEN);
 		Long count = repo.count();
