@@ -3,6 +3,7 @@ package pl.altkom.shop.repo;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,5 +33,7 @@ public interface SpringDataProductRepo
 	@Modifying
 	@Query("update Product p set p.price = :newPrice")
 	void promotion(@Param("newPrice") BigDecimal price);
+
+	Stream<Product> readAllByQuantityNotNull();
 
 }
