@@ -1,0 +1,18 @@
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"  
+xmlns:spring="http://www.springframework.org/tags" 
+xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.attribute name="name"  required="true" rtexprvalue="false" description="Field name"/>
+	<jsp:directive.attribute name="label" required="true" rtexprvalue="false" description="Label"/>
+
+	<spring:bind path="${name}">
+	<div class="form-group ${status.error ? 'has-error' : ''}">
+		<label class="col-sm-2 control-label"><spring:message code="${label}" /> </label>
+		<div class="col-sm-8">
+			<form:input path="${name}" class="form-control" />
+			<form:errors path="${name}" />
+		</div>
+	</div>
+	</spring:bind>
+</div>
