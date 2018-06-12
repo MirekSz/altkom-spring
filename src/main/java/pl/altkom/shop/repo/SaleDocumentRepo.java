@@ -7,4 +7,6 @@ import pl.altkom.shop.model.SaleDocument;
 
 @Repository
 public interface SaleDocumentRepo extends JpaRepository<SaleDocument, Long> {
+
+	SaleDocument findByNumber(String number);
 }
