@@ -5,6 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,7 @@ public class HibernateProductRepo implements ProductRepo {
 	EntityManager em;
 
 	@Override
+	@PreAuthorize("(#product.quantity != 0 AND hasRole('ROLE_USER')) OR (#product.quantity == 0 AND hasRole('ROLE_ADMIN'))")
 	public Long insert(Product product) {
 		em.persist(product);
 		return product.getId();
@@ -29,6 +33,7 @@ public class HibernateProductRepo implements ProductRepo {
 	}
 
 	@Override
+	@Secured("ROLE_ADMIN")
 	public void delete(Long id) {
 		Product product = em.find(Product.class, id);
 		em.remove(product);
@@ -36,6 +41,7 @@ public class HibernateProductRepo implements ProductRepo {
 
 	@Override
 	@Transactional(readOnly = true)
+	@PostAuthorize("!(returnObject.price > 100 AND hasRole('ROLE_USER')) OR hasRole('ROLE_ADMIN')")
 	public Product find(Long id) {
 		Product product = em.find(Product.class, id);
 		return product;
