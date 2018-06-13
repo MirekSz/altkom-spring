@@ -34,7 +34,7 @@
 					<li><a href="${contextPath}/cart">Cart</a></li>
 					<sec:authorize
 						access="isAuthenticated()">
-					<li><a href="#" onClick="$('#logoutForm').submit();return false;">Logout ${user.username}</a></li>
+					<li><a href="#" onClick="$('#logoutForm').submit();return false;">Logout ${user.name}</a></li>
 					</sec:authorize>
 				</ul>
 			</div>
