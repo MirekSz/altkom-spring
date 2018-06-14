@@ -20,7 +20,7 @@ public class HibernateProductRepo implements ProductRepo {
 	EntityManager em;
 
 	@Override
-	@PreAuthorize("(#product.quantity != 0 AND hasRole('ROLE_USER')) OR (#product.quantity == 0 AND hasRole('ROLE_ADMIN'))")
+	@PreAuthorize("#product.quantity != 0 OR hasRole('ROLE_ADMIN'))")
 	public Long insert(Product product) {
 		em.persist(product);
 		return product.getId();
